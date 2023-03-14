@@ -1,0 +1,10 @@
+
+FROM node:18-alpine3.16
+
+WORKDIR /app
+RUN npm install --no-save --quiet knex@2.4.0 pg@8.8.0
+
+COPY ./knexfile.js /app/
+COPY ./migrations/ /app/migrations
+
+ENTRYPOINT ["npx", "knex", "migrate:latest"]
