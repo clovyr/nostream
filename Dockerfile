@@ -18,15 +18,15 @@ LABEL org.opencontainers.image.description="nostream"
 LABEL org.opencontainers.image.authors="Ricardo Arturo Cabral Mejía"
 LABEL org.opencontainers.image.licenses=MIT
 
-WORKDIR /app
 RUN apk add --no-cache --update git
 
-ADD resources /app/resources
+USER node:node
+WORKDIR /app
 
-COPY --from=build /build/dist .
+ADD --chown=node:node resources /app/resources
+
+COPY --chown=node:node --from=build /build/dist .
 
 RUN npm install --omit=dev --quiet
-
-USER node:node
 
 CMD ["node", "src/index.js"]
